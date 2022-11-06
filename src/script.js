@@ -27,7 +27,7 @@ const generateBoardHTML = field => {
   return fragment;
 };
 
-let board = null
+let wave = null;
 
 button.addEventListener('click', () => {
   if (!rowsInput?.value || !columnsInput?.value) {
@@ -36,10 +36,13 @@ button.addEventListener('click', () => {
   const rowsCount = Math.max(+rowsInput.value, 2);
   const columnsCount = Math.max(+columnsInput.value, 2);
   if (rowsCount * columnsCount > 10000) return;
-  board = new Board(rowsCount, columnsCount);
+  if (wave) {
+    wave.destroy();
+  }
+  const board = new Board(rowsCount, columnsCount);
   board.generateField();
 
-  const wave = new Wave(board => {
+  wave = new Wave(board => {
       boardContainer.innerHTML = '';
       boardContainer.append(generateBoardHTML(board));
     },

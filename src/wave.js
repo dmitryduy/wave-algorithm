@@ -31,13 +31,13 @@ export class Wave {
       }
       this.drawHTML(this.field);
       if (this.queue.length) {
-        this.options.isAnimate ? requestAnimationFrame(emptyQueue) : emptyQueue();
+        this.options.isAnimate ? (this.animationFrameId = requestAnimationFrame(emptyQueue)) : emptyQueue();
       } else {
         this.drawPath();
         this.drawHTML(this.field);
       }
     }
-    requestAnimationFrame(emptyQueue);
+    this.animationFrameId = requestAnimationFrame(emptyQueue);
   }
 
   pushToQueue(startX, startY, value) {
@@ -82,9 +82,14 @@ export class Wave {
       this.field[currPos.x][currPos.y] = typeOfCell.path;
       this.drawHTML(this.field);
       if (currPos.value > 1) {
-        this.options.isAnimate? requestAnimationFrame(fn): fn();
+        this.options.isAnimate? (this.animationFrameId = requestAnimationFrame(fn)): fn();
       }
     }
-    requestAnimationFrame(fn);
+    this.animationFrameId = requestAnimationFrame(fn);
+  }
+  destroy() {
+    cancelAnimationFrame(this.animationFrameId);
+    delete this.queue;
+
   }
 }
