@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+<div id="app">
+  <input class='rows-count' type='number' placeholder='Количество рядов'/>
+  <input class='columns-count' type='number' placeholder='Количество столбцов'/>
+  <label for="checkbox">Рисовать до конца? <input class="type-draw" id="checkbox" type="checkbox"/></label>
+  <label for="animate">Анимация? <input class="animate" id="animate" type="checkbox"/></label>
+  <button>Подтвердить</button>
+</div>
+<div class="board"></div>
+
+<script src="src/utils.js" type="module"></script>
+<script src="src/wave.js" type="module"></script>
+<script src="src/board.js" type="module"></script>
+<script src="src/script.js" type="module"></script>
+</body>
+</html>
