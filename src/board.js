@@ -14,7 +14,7 @@ export class Board {
     this.addCells(1, typeOfCell.start);
     this.addCells(1, typeOfCell.end);
     this.addCells(
-      Math.floor((this.rows * this.columns) / getRandom(2, 50)),
+      Math.floor((this.rows * this.columns) / getRandom(2, 5)),
       typeOfCell.block
     );
   }

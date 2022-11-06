@@ -6,7 +6,7 @@ export const typeOfCell = {
   path: -5,
 };
 
-export const getRandom = (max, min) => Math.floor(Math.random() * (max - min) + min);
+export const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
 export const getClassNameByCellType = cellType => {
   switch (cellType) {
