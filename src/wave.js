@@ -4,10 +4,15 @@ export class Wave {
   constructor(drawHTML, field, options) {
     this.field = field;
     this.queue = [];
-    this.end = null;
     this.options = options;
     this.drawHTML = drawHTML;
+    this.options.endsCount = options.endsCount || 1;
+    this.ends = [];
   }
+
+  isFoundedEnd(x, y) {
+    return this.ends.some(end => end.x === x && end.y === y);
+}
   start() {
     const start = this.findStart();
     this.pushToQueue(start.x, start.y, 1);
@@ -16,9 +21,9 @@ export class Wave {
       const length = this.queue.length;
       for (let i = 0; i < length; i++) {
         const cell = this.queue.shift();
-        if (!this.end && this.checkCell(cell.x, cell.y, typeOfCell.end)) {
-          this.end = {x: cell.x, y: cell.y, value: cell.value};
-          if (this.options.stopOnEnd) {
+        if (!this.isFoundedEnd(cell.x, cell.y) && this.checkCell(cell.x, cell.y, typeOfCell.end)) {
+          this.ends.push({x: cell.x, y: cell.y, value: cell.value});
+          if (this.options.stopOnEnd && this.ends.length === this.options.endsCount) {
             this.drawPath();
             this.drawHTML(this.field);
             return;
@@ -63,11 +68,11 @@ export class Wave {
   }
 
   drawPath() {
-    if (!this.end) {
+    if (!this.ends.length) {
       return;
     }
-    let currPos = {...this.end};
-    const fn = () => {
+
+    const fn = (currPos) => {
       const newValue = currPos.value - 1;
       if (this.checkCell(currPos.x + 1, currPos.y, newValue)) {
         currPos = {...currPos, x: currPos.x + 1};
@@ -82,10 +87,13 @@ export class Wave {
       this.field[currPos.x][currPos.y] = typeOfCell.path;
       this.drawHTML(this.field);
       if (currPos.value > 1) {
-        this.options.isAnimate? (this.animationFrameId = requestAnimationFrame(fn)): fn();
+        this.options.isAnimate? (this.animationFrameId = requestAnimationFrame(() => fn(currPos))): fn(currPos);
       }
     }
-    this.animationFrameId = requestAnimationFrame(fn);
+    for (let i = 0; i < this.ends.length; i++) {
+      const currPos = {...this.ends[i]};
+      this.animationFrameId = requestAnimationFrame(() => fn(currPos));
+    }
   }
   destroy() {
     cancelAnimationFrame(this.animationFrameId);

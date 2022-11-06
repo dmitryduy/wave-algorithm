@@ -8,6 +8,7 @@ const button = document.querySelector('button');
 const boardContainer = document.querySelector('.board');
 const drawTypeCheckbox = document.querySelector('.type-draw');
 const animateCheckbox = document.querySelector('.animate');
+const exitCountInput = document.querySelector('.exit-count');
 
 const generateBoardHTML = field => {
   const fragment = document.createDocumentFragment();
@@ -33,13 +34,14 @@ button.addEventListener('click', () => {
   if (!rowsInput?.value || !columnsInput?.value) {
     return;
   }
-  const rowsCount = Math.max(+rowsInput.value, 2);
-  const columnsCount = Math.max(+columnsInput.value, 2);
+  const rowsCount = Math.max(+rowsInput.value, 3);
+  const columnsCount = Math.max(+columnsInput.value, 3);
+  const exitCount = Math.min(+exitCountInput.value, 3);
   if (rowsCount * columnsCount > 10000) return;
   if (wave) {
     wave.destroy();
   }
-  const board = new Board(rowsCount, columnsCount);
+  const board = new Board(rowsCount, columnsCount, exitCount);
   board.generateField();
 
   wave = new Wave(board => {
@@ -47,7 +49,7 @@ button.addEventListener('click', () => {
       boardContainer.append(generateBoardHTML(board));
     },
     board.getBoard(),
-    {stopOnEnd: !drawTypeCheckbox.checked, isAnimate: animateCheckbox.checked}
+    {stopOnEnd: !drawTypeCheckbox.checked, isAnimate: animateCheckbox.checked, endsCount: exitCount}
   );
   wave.start();
 
