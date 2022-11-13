@@ -19,7 +19,7 @@ button.addEventListener('click', async () => {
   wave && wave.finish();
 
   if (!rowsInput?.value || !columnsInput?.value) {
-    alert('Введите количество строчек и столбцов')ж
+    alert('Введите количество строчек и столбцов');
     return;
   }
   const rowsCount = Math.max(+rowsInput.value, 10);
