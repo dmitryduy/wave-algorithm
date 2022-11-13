@@ -13,11 +13,15 @@ export class Board {
   }
 
   fillField() {
-    this.addCells(1, typeOfCell.start);
-    this.addCells(1, typeOfCell.end);
+    this.addCellsByRandom(1, typeOfCell.start);
+    this.addCellsByRandom(1, typeOfCell.end);
   }
 
-  addCells(count, type) {
+  addCell(position, type) {
+    this.field[position.x][position.y] = type;
+  }
+
+  addCellsByRandom(count, type) {
     for (let i = 0; i < count; i++) {
       const pos = this.getRandomPosition();
       this.field[pos.x][pos.y] = type;

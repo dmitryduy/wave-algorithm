@@ -83,7 +83,6 @@ export class MazeCreator {
         this.addTractor();
       }
     }
-    this.board.fillField();
     this.canvas.drawMaze();
   }
 
@@ -115,5 +114,14 @@ export class MazeCreator {
 
   finish() {
     this.stop = true;
+  }
+  checkCell(x, y) {
+    return this.board.getBoard()[x][y] === typeOfCell.empty;
+  }
+  addCell(position, type) {
+    this.board.addCell(position, type);
+  }
+  draw() {
+    this.canvas.drawMaze();
   }
 }
