@@ -1,19 +1,17 @@
-import { typeOfCell } from "./utils.js";
+import { delay, typeOfCell } from "./utils.js";
 
 export class Wave {
-  constructor(drawHTML, field, options) {
+  stop = false;
+
+  constructor(drawMaze, field, options) {
     this.field = field;
     this.queue = [];
     this.options = options;
-    this.drawHTML = drawHTML;
-    this.options.endsCount = options.endsCount || 1;
-    this.ends = [];
+    this.drawMaze = drawMaze;
+    this.end = {};
   }
 
-  isFoundedEnd(x, y) {
-    return this.ends.some(end => end.x === x && end.y === y);
-}
-  start() {
+  async start() {
     const start = this.findStart();
     this.pushToQueue(start.x, start.y, 1);
 
@@ -21,12 +19,11 @@ export class Wave {
       const length = this.queue.length;
       for (let i = 0; i < length; i++) {
         const cell = this.queue.shift();
-        if (!this.isFoundedEnd(cell.x, cell.y) && this.checkCell(cell.x, cell.y, typeOfCell.end)) {
-          this.ends.push({x: cell.x, y: cell.y, value: cell.value});
-          if (this.options.stopOnEnd && this.ends.length === this.options.endsCount) {
-            this.drawPath();
-            this.drawHTML(this.field);
-            return;
+        if (this.checkCell(cell.x, cell.y, typeOfCell.end)) {
+          this.end = {x: cell.x, y: cell.y, value: cell.value};
+          if (this.options.stopOnEnd) {
+            this.drawMaze();
+            return true;
           }
         }
         if (this.checkCell(cell.x, cell.y, typeOfCell.empty)) {
@@ -34,15 +31,14 @@ export class Wave {
           this.pushToQueue(cell.x, cell.y, cell.value + 1);
         }
       }
-      this.drawHTML(this.field);
-      if (this.queue.length) {
-        this.options.isAnimate ? (this.animationFrameId = requestAnimationFrame(emptyQueue)) : emptyQueue();
-      } else {
-        this.drawPath();
-        this.drawHTML(this.field);
-      }
     }
-    this.animationFrameId = requestAnimationFrame(emptyQueue);
+    while (this.queue.length && !emptyQueue() && !this.stop) {
+      this.drawMaze();
+      await delay(this.options.animationSpeed);
+    }
+
+    this.drawPath();
+    this.drawMaze();
   }
 
   pushToQueue(startX, startY, value) {
@@ -63,16 +59,15 @@ export class Wave {
       }
     }
   }
+
   checkCell(x, y, value) {
     return this.field[x] && this.field[x][y] === value;
   }
 
-  drawPath() {
-    if (!this.ends.length) {
-      return;
-    }
+  async drawPath() {
+    let currPos = this.end;
 
-    const fn = (currPos) => {
+    const fn = () => {
       const newValue = currPos.value - 1;
       if (this.checkCell(currPos.x + 1, currPos.y, newValue)) {
         currPos = {...currPos, x: currPos.x + 1};
@@ -85,19 +80,15 @@ export class Wave {
       }
       currPos.value = newValue;
       this.field[currPos.x][currPos.y] = typeOfCell.path;
-      this.drawHTML(this.field);
-      if (currPos.value > 1) {
-        this.options.isAnimate? (this.animationFrameId = requestAnimationFrame(() => fn(currPos))): fn(currPos);
-      }
     }
-    for (let i = 0; i < this.ends.length; i++) {
-      const currPos = {...this.ends[i]};
-      this.animationFrameId = requestAnimationFrame(() => fn(currPos));
+    while (currPos.value > 1 && !this.stop) {
+      fn();
+      this.drawMaze();
+      await delay(this.options.animationSpeed);
     }
   }
-  destroy() {
-    cancelAnimationFrame(this.animationFrameId);
-    delete this.queue;
 
+  finish() {
+    this.stop = true;
   }
 }
