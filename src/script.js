@@ -19,13 +19,17 @@ button.addEventListener('click', async () => {
   wave && wave.finish();
 
   if (!rowsInput?.value || !columnsInput?.value) {
+    alert('Введите количество строчек и столбцов')ж
     return;
   }
   const rowsCount = Math.max(+rowsInput.value, 10);
   const columnsCount = Math.max(+columnsInput.value, 10);
   const animationSpeed = Math.abs(animationSpeedInput.value ? +animationSpeedInput.value : 0);
 
-  if (rowsCount * columnsCount > 10000) return;
+  if (rowsCount * columnsCount > 10000) {
+    alert('Количество ячеек не должно превышать 10 000');
+    return;
+  }
   mazeCreator = new MazeCreator(canvasBlock, {
     columns: columnsCount,
     rows: rowsCount,

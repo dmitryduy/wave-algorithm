@@ -26,18 +26,6 @@ body::-webkit-scrollbar {
     color: #fff;
 }
 
-.canvas-container {
-    display: flex;
-    justify-content: center;
-    width: calc(100vw - 10px);
-    margin: 0 auto;
-}
-
-.board {
-    width: fit-content;
-}
-
-
 input {
     padding: 4px;
     font-size: 18px;
