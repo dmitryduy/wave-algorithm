@@ -3,7 +3,7 @@ import { getCellColor } from "./utils.js";
 export class Canvas {
   options = {
     cellSize: 10,
-    backgroundColor: '#000',
+    backgroundColor: '#1e1e1e',
     padding: 0
   }
 

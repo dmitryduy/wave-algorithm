@@ -6,14 +6,17 @@
   <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
-<div id="app">
-  <input class='rows-count' type='number' placeholder='Количество рядов(минимум 10)'/>
-  <input class='columns-count' type='number' placeholder='Количество столбцов(минимум 10)'/>
-  <input class='animation-speed' type='number' placeholder='Скорость анимации(мс)'/>
-  <label for="checkbox">Рисовать до конца? <input class="type-draw" id="checkbox" type="checkbox"/></label>
-  <button>Подтвердить</button>
+<div class="container">
+  <div id="app">
+    <input class='rows-count' type='number' placeholder='Количество рядов(минимум 10)'/>
+    <input class='columns-count' type='number' placeholder='Количество столбцов(минимум 10)'/>
+    <input class='animation-speed' type='number' placeholder='Скорость анимации(мс)'/>
+    <label for="checkbox">Рисовать до конца? <input class="type-draw" id="checkbox" type="checkbox"/></label>
+    <button>Подтвердить</button>
+  </div>
+  <canvas class="board"></canvas>
 </div>
-<canvas class="board"></canvas>
+
 
 <script src="src/mazeCreator.js" type="module"></script>
 <script src="src/canvas.js" type="module"></script>
