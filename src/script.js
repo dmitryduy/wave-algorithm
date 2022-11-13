@@ -26,12 +26,11 @@ button.addEventListener('click', async () => {
   const animationSpeed = Math.abs(animationSpeedInput.value ? +animationSpeedInput.value : 0);
 
   if (rowsCount * columnsCount > 10000) return;
-
   mazeCreator = new MazeCreator(canvasBlock, {
     columns: columnsCount,
     rows: rowsCount,
     animationSpeed,
-    cellSize: getCellSize(rowsCount * columnsCount)
+    cellSize: getCellSize(columnsCount)
   }, (currentBlocks, maxBlocks) => {
     remainingDiv.textContent = `Лабирит сгенерирован на ${(currentBlocks / maxBlocks * 100).toFixed(2)}%`
   });

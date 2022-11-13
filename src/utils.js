@@ -45,16 +45,4 @@ export const getCellColor = cell => {
 
 export const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
 
-export const getCellSize = cellsCount => {
-  if (cellsCount < 1000) {
-    return 40;
-  }
-  if (cellsCount < 2000) {
-    return 30;
-  }
-  if (cellsCount < 5000) {
-    return 20;
-  }
-
-  return 10;
-}
+export const getCellSize = columnsCount => Math.min(Math.floor((window.innerWidth - 10)/columnsCount), 40);

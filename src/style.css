@@ -8,6 +8,10 @@ body {
     background-color: #cccccc;
 }
 
+body::-webkit-scrollbar {
+    width: 0;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -22,9 +26,17 @@ body {
     color: #fff;
 }
 
-.board {
-    width: 100%;
+.canvas-container {
+    display: flex;
+    justify-content: center;
+    width: calc(100vw - 10px);
+    margin: 0 auto;
 }
+
+.board {
+    width: fit-content;
+}
+
 
 input {
     padding: 4px;
