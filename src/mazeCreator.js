@@ -15,7 +15,8 @@ export class MazeCreator {
   tractors = [];
   stop = false
 
-  constructor(canvas, options) {
+  constructor(canvas, options, onUpdate) {
+    this.onUpdate = onUpdate;
     this.options = {...this.options, ...options};
     this.board = new Board(this.options.columns, this.options.rows);
     this.board.generateField();
@@ -64,6 +65,7 @@ export class MazeCreator {
       const board = this.board.getBoard();
       if (board[tractor.y] && board[tractor.y][tractor.x] === typeOfCell.block) {
         this.visitedSupportBlocks++;
+        this.onUpdate(this.visitedSupportBlocks, this.maxSupportBlocks);
         board[tractor.y][tractor.x] = typeOfCell.empty;
         board[tractor.y - dy / 2][tractor.x - dx / 2] = typeOfCell.empty;
       }

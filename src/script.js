@@ -8,13 +8,15 @@ const button = document.querySelector('button');
 const canvasBlock = document.querySelector('.board');
 const drawTypeCheckbox = document.querySelector('.type-draw');
 const animationSpeedInput = document.querySelector('.animation-speed');
+const remainingDiv = document.querySelector('.remaining');
 
 let wave = null;
 let mazeCreator = null;
 
 button.addEventListener('click', async () => {
-    mazeCreator && mazeCreator.finish();
-    wave && wave.finish();
+  remainingDiv.style.display = 'block';
+  mazeCreator && mazeCreator.finish();
+  wave && wave.finish();
 
   if (!rowsInput?.value || !columnsInput?.value) {
     return;
@@ -30,6 +32,8 @@ button.addEventListener('click', async () => {
     rows: rowsCount,
     animationSpeed,
     cellSize: getCellSize(rowsCount * columnsCount)
+  }, (currentBlocks, maxBlocks) => {
+    remainingDiv.textContent = `Лабирит сгенерирован на ${(currentBlocks / maxBlocks * 100).toFixed(2)}%`
   });
   await mazeCreator.run();
 
